@@ -1,6 +1,9 @@
+var ROBOT_IP = '10.103.7.157';
+
 var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 var fs = require('fs');
 var braintree = require("braintree");
+var exec = require('child_process').exec;
 
 var BraintreeClient = braintree.connect({
   environment: braintree.Environment.Sandbox,
@@ -13,7 +16,6 @@ var VisualRecognitionClient = new VisualRecognitionV3({
   api_key: '30160acbd394c780ea8cc45a9111e422346fbfa1',
   version_date: '2016-05-19'
 });
-
 
 var express = require('express');
 var morgan = require('morgan');
@@ -114,7 +116,13 @@ app.get("/api/orders", (req, res, next) => {
 });
 
 app.get("/api/newPicture", (req, res, next) => {
-  return res.send();
+  exec('sshpass -p "nao" scp -r nao@' + ROBOT_IP + ':/home/nao/recordings/cameras/hi.jpg ./resources/image.jpg', function callback(error, stdout, stderr){
+    console.log(error);
+    console.log(stdout);
+    console.log(stderr);
+    return res.send();
+  });
+  
 });
 
 app.use(express.static(__dirname + '/public'));
@@ -129,3 +137,4 @@ var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
   console.log(`Listening on ${PORT}`);
 });
+
