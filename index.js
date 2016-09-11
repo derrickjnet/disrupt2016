@@ -13,17 +13,17 @@ var app = express();
 var products = [{id: 1, name: 'Tee-shirt', amount: '15.00'}, {id: 2, name: 'Pants', amount: '30.00'}, {id: 3, name: 'Socks', amount: '7.00'}];
 var orders = [];
 
-app.get("/products", function(req, res, next) {
+app.get("/api/products", function(req, res, next) {
   return res.json(products);
 });
 
-app.get("/braintree/token", function(req, res, next) {
+app.get("/api/braintree/token", function(req, res, next) {
   BraintreeClient.clientToken.generate({}, function(err, response) {
     res.json({token: response.clientToken});
   });
 });
 
-app.post("/orders", function(req, res, next) {
+app.post("/api/orders", function(req, res, next) {
   var nonce = req.body.nonce;
   var productId = req.body.productId;
 
@@ -42,12 +42,12 @@ app.post("/orders", function(req, res, next) {
   });
 });
 
-app.get("/orders", (req, res, next) => {
+app.get("/api/orders", (req, res, next) => {
   res.json(orders);
 });
 
 var PORT = process.env.PORT || 3000;
 
 app.listen(PORT, function() {
-  console.log('Listening on 3000');
+  console.log(`Listening on ${PORT}`);
 });
