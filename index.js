@@ -1,3 +1,5 @@
+var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
+var fs = require('fs');
 var braintree = require("braintree");
 
 var BraintreeClient = braintree.connect({
@@ -6,6 +8,12 @@ var BraintreeClient = braintree.connect({
   publicKey: "dfnj9h8hk4ygz4zj",
   privateKey: "0a38e5eddc9cd06683a1dea18bc4654f"
 });
+
+var VisualRecognitionClient = new VisualRecognitionV3({
+  api_key: '7fc163975da56fa096150758e5955b3324cb09a8',
+  version_date: '2016-05-19'
+});
+
 
 var express = require('express');
 var morgan = require('morgan');
@@ -45,7 +53,6 @@ app.post("/api/orders", function(req, res, next) {
   var product = products.filter((product => product.id === productId))[0];
 
   var transactionPromise = new Promise((resolve, reject) => {
-
     BraintreeClient.transaction.sale({amount: product.amount, paymentMethodNonce: nonce, options: {submitForSettlement: true}}, function(err, result) {
       resolve();
     });
@@ -56,6 +63,26 @@ app.post("/api/orders", function(req, res, next) {
 
     res.send();
   });
+});
+
+app.get('/api/test', function(req, res, next) {
+
+  var params = {
+    images_file: fs.createReadStream(__dirname + '/resources/watson-shirt.jpg')
+  };
+
+  var visualPromise = new Promise((resolve, reject) => {
+    VisualRecognitionClient.classify(params, function(err, response) {
+      if(err) console.log(err);
+
+      resolve(response);
+    });
+  });
+
+  visualPromise.then((result) => {
+    res.send(result)
+  });
+
 });
 
 app.get("/api/orders", (req, res, next) => {
