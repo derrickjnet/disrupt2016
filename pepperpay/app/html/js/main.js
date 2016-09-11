@@ -5,58 +5,58 @@ app.constant('API_SERVER', 'http://10.103.15.245:3000');
 //console.log(app.config);
 
 //app.run(function() {
-  // RobotUtils.onService(function(ALTextToSpeech, ALMotion, ALPhotoCapture) {
+// RobotUtils.onService(function(ALTextToSpeech, ALMotion, ALPhotoCapture) {
 
 
-  //   // Bind button callbacks
-  //   $(".sayItButton").click(function() {
-  //     //ALTextToSpeech.say($(this).html());
+//   // Bind button callbacks
+//   $(".sayItButton").click(function() {
+//     //ALTextToSpeech.say($(this).html());
 
-  //     //var textToSay = $('.inputText').val();
+//     //var textToSay = $('.inputText').val();
 
-  //     //ALTextToSpeech.say(textToSay);
+//     //ALTextToSpeech.say(textToSay);
 
-  //     ALPhotoCapture.takePicture('/home/nao/recordings/cameras', 'hi.jpg').then(function(data) {
-  //       console.log(data);
+//     ALPhotoCapture.takePicture('/home/nao/recordings/cameras', 'hi.jpg').then(function(data) {
+//       console.log(data);
 
-  //       $.get(API_SERVER + '/api/newPicture', function( data ) {
-  //         console.log(data);
-  //       });
+//       $.get(API_SERVER + '/api/newPicture', function( data ) {
+//         console.log(data);
+//       });
 
-  //       // $.ajax({
-  //       //   method: 'GET',
-  //       //   url: 'google.com'
-  //       // }).done(function(res) {
-  //       //   $('.outputText').val('worked');
-  //       //   console.log('res=');
-  //       //   console.log(res);
-  //       // }).fail(function(err, err2, err3, err4) {
-  //       //   $('.outputText').val('didnt work');
-  //       //   console.log('err=');
-  //       //   console.log(err);
-  //       //   console.log(err2);
-  //       //   console.log(err3);
-  //       //   console.log(err4);
-  //       // });
-  //     }, function(err) {
-  //       console.log(err);
-  //     });
-  //     //console.log(pic);
-
-
-  //     //ALMotion.move(1.0, 0.0, 0.0);
-  //   });
+//       // $.ajax({
+//       //   method: 'GET',
+//       //   url: 'google.com'
+//       // }).done(function(res) {
+//       //   $('.outputText').val('worked');
+//       //   console.log('res=');
+//       //   console.log(res);
+//       // }).fail(function(err, err2, err3, err4) {
+//       //   $('.outputText').val('didnt work');
+//       //   console.log('err=');
+//       //   console.log(err);
+//       //   console.log(err2);
+//       //   console.log(err3);
+//       //   console.log(err4);
+//       // });
+//     }, function(err) {
+//       console.log(err);
+//     });
+//     //console.log(pic);
 
 
-  //   // $(function() {
-  //   //   $('#simple_sketch').sketch();
-  //   // });
+//     //ALMotion.move(1.0, 0.0, 0.0);
+//   });
 
 
-  // }, function(err) {
-  //   console.log('error in RobotUtils.onService');
-  //   console.log(err);
-  // });
+//   // $(function() {
+//   //   $('#simple_sketch').sketch();
+//   // });
+
+
+// }, function(err) {
+//   console.log('error in RobotUtils.onService');
+//   console.log(err);
+// });
 //});
 
 app.factory('Braintree', function($http) {
@@ -101,7 +101,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
   $scope.orders = [];
 
   $scope.createOrder = function() {
-    if ($scope.ordering) return;
+    if($scope.ordering) return;
     $scope.ordering = true;
     Order.createOrder($scope.product.id, $scope.nonce).success(function() {
       $scope.product = null;
@@ -157,7 +157,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
       ALMotion.angleInterpolation('LElbowYaw', [-0.6], [5.0], true);
       ALMotion.angleInterpolation('LHand', [0.1], [5.0], true);
     }
-    
+
     function moveStartCheckout() {
       //ALTextToSpeech.say('Hold up your first item please. Say cheese! 1, 2, 3');
       ALMotion.angleInterpolation('HeadYaw', [0.3, -0.3, 0.3, -0.3, 0.0], [1.0, 2.0, 3.0, 4.0, 5.0], true);
@@ -197,7 +197,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
     //moveInitial();
     //moveStartCheckout();
     //moveFirstItem();
-    
+
 
     $scope.goStartCheckout = function() {
       $scope.step = 'startCheckout';
@@ -214,14 +214,21 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
         $http.get('/api/newPicture').success(function() {
           $scope.imageSrc = API_SERVER + '/image.jpg';
 
-          for (var i = 0; i < $scope.products.length; i++) {
-            if ($scope.products[i].id == 1) {
-              $scope.product = $scope.products[i];
-              break;
+          $http.get('/api/check').success(function(results) {
+            if(results.classes && results.classes.length > 0) {
+              $scope.score = results.classes[0].score;
             }
-          }
 
-          $scope.step = 'firstItem';
+            for(var i = 0; i < $scope.products.length; i++) {
+              if($scope.products[i].id == 1) {
+                $scope.product = $scope.products[i];
+                break;
+              }
+            }
+
+            $scope.step = 'firstItem';
+
+          });
         }).finally(function() {
           $scope.loadingPic = false;
         });
@@ -244,7 +251,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
           console.log(error);
         }
       });
-    
+
     };
 
     $scope.goSign = function() {
@@ -273,17 +280,17 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
 
 /*
 
-- hi Dave, click here if you'd like to check out.
-- ok. can i see your first item
-- take picture of shirt
-- admin panel send picture to watson to determine item
-- great! that shirt is $15. will that be all?
-- yes
-- great, please enter your credit card
-- show card on admin
-- thanks! and then roll away
+ - hi Dave, click here if you'd like to check out.
+ - ok. can i see your first item
+ - take picture of shirt
+ - admin panel send picture to watson to determine item
+ - great! that shirt is $15. will that be all?
+ - yes
+ - great, please enter your credit card
+ - show card on admin
+ - thanks! and then roll away
 
-*/
+ */
 
 
 app.factory('TokenInterceptor', function($q, API_SERVER) {
@@ -291,7 +298,7 @@ app.factory('TokenInterceptor', function($q, API_SERVER) {
     request: function(config) {
       config.headers = config.headers || {};
 
-      if (config.url.indexOf('/api/') >= 0) {
+      if(config.url.indexOf('/api/') >= 0) {
         config.url = API_SERVER + config.url;
       }
 

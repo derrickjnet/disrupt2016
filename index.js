@@ -90,19 +90,19 @@ app.get('/api/train', function(req, res, next) {
   })
 });
 
-app.get('/api/test', function(req, res, next) {
+app.get('/api/check', function(req, res, next) {
 
   var visualPromise = new Promise((resolve, reject) => {
 
     var params = {
-      images_file: fs.createReadStream(__dirname + '/resources/watson-shirt-2.jpg'),
+      images_file: fs.createReadStream(__dirname + '/resources/image.jpg'),
       classifier_ids: ['watsonshirt_1044379170']
     };
 
     VisualRecognitionClient.classify(params, function(err, response) {
       if(err) console.log(err);
 
-      resolve(response);
+      resolve(response.images[0].classifiers);
     });
   });
 

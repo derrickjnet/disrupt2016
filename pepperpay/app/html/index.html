@@ -90,10 +90,11 @@
 
     <div class="container">
       <center><img ng-src="{{imageSrc}}" class="img-rounded" height="200"></center>
+      <center ng-if="score">{{score * 100 | number: 0}}% accuracy</center>
     <div class="row"><br>
       <div class="col-md-10 col-md-offset-1">
         <h1>1 Watson t-shirt ---------- $16.50</h1>
-        <p class="pull-left">Details: 100% cotton. Hand wash and dry.</p> 
+        <p class="pull-left">Details: 100% cotton. Hand wash and dry.</p>
       </div>
     <!--  <div class="col-md-4">
         <h1>$15.99</h1>
@@ -130,7 +131,7 @@
     <div class="row">
       <div class="col-md-10 col-md-offset-1">
         <h1>Order summary</h1>
-        <p>Please review your items &amp; show your payment to continue.</p> 
+        <p>Please review your items &amp; show your payment to continue.</p>
     <br><br>
       <table class="table">
         <thead>
@@ -146,13 +147,13 @@
             <td>1</td>
             <td>$16.50</td>
           </tr>
-       
+
                 <tr>
                    <td></td>
             <td></td>
             <td>-</td>
           </tr>
-        
+
                 <tr>
                    <td></td>
             <td>Subtotal</td>
@@ -190,7 +191,7 @@
     <br><br>
 
     </div>
-    
+
   </div>
 
   <div ng-show="step == 'sign'">
@@ -232,7 +233,7 @@
       <br><br><br><br>
       <a href="#" ng-click="startOver()" class="next-button">Start Over</a>
     </div>
-    
+
   </div>
 
   <script src="js/jquery-3.1.0.min.js"></script>
