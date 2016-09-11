@@ -93,7 +93,7 @@ app.get('/api/test', function(req, res, next) {
   var visualPromise = new Promise((resolve, reject) => {
 
     var params = {
-      images_file: fs.createReadStream(__dirname + '/resources/twilio-shirt.jpg')
+      images_file: fs.createReadStream(__dirname + '/resources/watson-shirt.jpg')
     };
 
     VisualRecognitionClient.classify(params, function(err, response) {
