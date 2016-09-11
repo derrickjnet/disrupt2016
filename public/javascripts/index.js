@@ -11,7 +11,7 @@ app.factory('Braintree', ($http) => {
 app.factory('Product', ($http) => {
   return {
     findProducts() {
-      $http.get('/api/products');
+      return $http.get('/api/products');
     }
   }
 });
@@ -19,26 +19,65 @@ app.factory('Product', ($http) => {
 app.factory('Order', ($http) => {
   return {
     createOrder(productId, nonce) {
-      var body = {nonce: nonce, productId: productId};
+      var body = {productId: productId, nonce: nonce};
       return $http.post('/api/orders', body);
     },
 
     findOrders() {
-      $http.get('/api/orders');
+      return $http.get('/api/orders');
     }
   }
 });
 
 app.controller('MainController', ($scope, Braintree, Product, Order) => {
 
+  $scope.nonce;
+
+  $scope.product;
+
+  $scope.products = [];
+
+  $scope.orders = [];
+
+  $scope.createOrder = () => {
+
+    Order.createOrder($scope.productId, $scope.nonce).success(function() {
+      $scope.productId = null;
+
+      refreshOrders();
+    });
+
+  };
+
   function refreshBraintree() {
     Braintree.getToken().success((token) => {
-      braintree.client.create({authorization: token.token}, function(err, instance) {
-        console.log(err, instance);
+
+      braintree.setup(token.token, 'custom', {
+        paypal: {container: 'paypal-button'},
+        onPaymentMethodReceived: function(res) {
+          $scope.nonce = res.nonce;
+          $scope.$apply();
+        },
+        onError: function(error) {
+          console.log(error);
+        }
       });
     });
   }
 
+  function refreshProducts() {
+    Product.findProducts().success((products) => {
+      $scope.products = products;
+    });
+  }
+
+  function refreshOrders() {
+    Order.findOrders().success((orders) => {
+      $scope.orders = orders;
+    });
+  }
+
+  refreshProducts();
   refreshBraintree();
 
 });

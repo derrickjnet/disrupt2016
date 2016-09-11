@@ -2,7 +2,7 @@
 
 <head>
 
-  <script src="https://js.braintreegateway.com/web/3.1.0/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/js/braintree-2.28.0.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <script src="javascripts/index.js"></script>
 
@@ -10,7 +10,15 @@
 
 <body ng-controller="MainController">
 
-  <h1>hello world</h1>
+<h1>hello world</h1>
+
+<form ng-submit="createOrder()">
+  <select ng-model="product" ng-options="product as product.name for product in products"></select>
+
+  <div id="paypal-button"></div>
+
+  <button ng-disabled="!nonce || !product">Pay {{product ? product.amount : ''}}</button>
+</form>
 
 </body>
 
