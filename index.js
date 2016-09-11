@@ -46,6 +46,13 @@ app.get("/api/orders", (req, res, next) => {
   res.json(orders);
 });
 
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', (req, res, next) => {
+  res.render('index.html');
+});
+
+
 var PORT = process.env.PORT || 3000;
 
 app.listen(PORT, function() {
