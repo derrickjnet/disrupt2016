@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/adamkchew/disrupt2016#readme",
   "dependencies": {
-    "ws": "^1.1.1"
+    "braintree": "^1.41.0",
+    "express": "^4.14.0"
   }
 }
