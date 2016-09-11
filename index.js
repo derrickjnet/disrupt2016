@@ -11,6 +11,7 @@ var express = require('express');
 var app = express();
 
 var products = [{id: 1, name: 'Tee-shirt', amount: '15.00'}, {id: 2, name: 'Pants', amount: '30.00'}, {id: 3, name: 'Socks', amount: '7.00'}];
+var orders = [];
 
 app.get("/products", function(req, res, next) {
   return res.json(products);
@@ -22,20 +23,31 @@ app.get("/braintree/token", function(req, res, next) {
   });
 });
 
-app.post("/checkout", function(req, res, next) {
-  var nonceFromTheClient = req.body.payment_method_nonce;
+app.post("/orders", function(req, res, next) {
+  var nonce = req.body.nonce;
+  var productId = req.body.productId;
 
-  BraintreeClient.transaction.sale({
-    amount: "10.00",
-    paymentMethodNonce: nonceFromTheClient,
-    options: {
-      submitForSettlement: true
-    }
-  }, function(err, result) {
+  var transactionPromise = new Promise((resolve, reject) => {
+    var product = products.filter((product => product.id === productId))[0];
 
+    BraintreeClient.transaction.sale({amount: product.amount, paymentMethodNonce: nonce, options: {submitForSettlement: true}}, function(err, result) {
+      orders.push({id: Math.random(), total: product.amount, products: [product], created: Date.now()});
+
+      resolve();
+    });
+  });
+
+  transactionPromise.then(() => {
+    res.send();
   });
 });
 
-app.listen(3000, function() {
-  console.log('Listening');
+app.get("/orders", (req, res, next) => {
+  res.json(orders);
+});
+
+var PORT = process.env.PORT || 3000;
+
+app.listen(PORT, function() {
+  console.log('Listening on 3000');
 });
