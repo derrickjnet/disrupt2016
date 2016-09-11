@@ -13,7 +13,7 @@ var BraintreeClient = braintree.connect({
 });
 
 var VisualRecognitionClient = new VisualRecognitionV3({
-  api_key: '7fc163975da56fa096150758e5955b3324cb09a8',
+  api_key: '30160acbd394c780ea8cc45a9111e422346fbfa1',
   version_date: '2016-05-19'
 });
 
@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,authorization,platform');
   res.setHeader('Access-Control-Allow-Credentials', true);
-  return next(); 
+  return next();
 });
 
 var products = [{id: 1, name: 'Tee-shirt', amount: '15.00'}, {id: 2, name: 'Pants', amount: '30.00'}, {id: 3, name: 'Socks', amount: '7.00'}];
@@ -67,13 +67,37 @@ app.post("/api/orders", function(req, res, next) {
   });
 });
 
-app.get('/api/test', function(req, res, next) {
-
-  var params = {
-    images_file: fs.createReadStream(__dirname + '/resources/watson-shirt.jpg')
-  };
+app.get('/api/train', function(req, res, next) {
 
   var visualPromise = new Promise((resolve, reject) => {
+
+    var params = {
+      name: 'watson-shirt',
+      watson_shirt_positive_examples: fs.createReadStream(__dirname + '/trainings/watson-shirt/watsonshirt.zip'),
+      holdingwatson_shirt_positive_examples: fs.createReadStream(__dirname + '/trainings/watson-shirt/holdingshirt.zip'),
+      negative_examples: fs.createReadStream(__dirname + '/trainings/watson-shirt/twilioshirt.zip')
+    };
+
+    VisualRecognitionClient.createClassifier(params, function(err, response) {
+      if(err) console.log(err);
+
+      resolve(response);
+    });
+  });
+
+  visualPromise.then((result) => {
+    res.send(result);
+  })
+});
+
+app.get('/api/test', function(req, res, next) {
+
+  var visualPromise = new Promise((resolve, reject) => {
+
+    var params = {
+      images_file: fs.createReadStream(__dirname + '/resources/twilio-shirt.jpg')
+    };
+
     VisualRecognitionClient.classify(params, function(err, response) {
       if(err) console.log(err);
 
