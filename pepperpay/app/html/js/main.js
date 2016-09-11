@@ -138,11 +138,11 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
   refreshBraintree();
   refreshOrders();
 
-  RobotUtils.onService(function(ALTextToSpeech, ALMotion, ALPhotoCapture) {
+  RobotUtils.onService(function(ALTextToSpeech, ALMotion, ALPhotoCapture, ALLeds) {
 
 
     function moveInitial() {
-      // ALTextToSpeech.say('Hi! How can I help you today?');
+      ALTextToSpeech.say('Hi! How can I help you today?');
       ALMotion.setStiffnesses('Head', 1.0);
       ALMotion.angleInterpolation('HeadYaw', [0.1, -0.1, 0.0], [1.0, 2.0, 3.0], true);
       ALMotion.angleInterpolation('HeadPitch', [-0.3, -0.5, -0.4], [1.0, 2.0, 3.0], true);
@@ -159,7 +159,8 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
     }
 
     function moveStartCheckout() {
-      //ALTextToSpeech.say('Hold up your first item please. Say cheese! 1, 2, 3');
+      ALTextToSpeech.say('Hold up your first item please. Say cheese! 1, 2, 3');
+      ALMotion.setStiffnesses('Head', 1.0);
       ALMotion.angleInterpolation('HeadYaw', [0.3, -0.3, 0.3, -0.3, 0.0], [1.0, 2.0, 3.0, 4.0, 5.0], true);
       ALMotion.angleInterpolation('HeadPitch', [-0.3, -0.5, -0.4], [1.0, 2.0, 3.0], true);
       ALMotion.angleInterpolation('RShoulderPitch', 0.5, 5.0, true);
@@ -177,30 +178,82 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
     }
 
     function moveFirstItem() {
-      ALTextToSpeech.say('That\'s one watson tee shirt. What next?');
-      ALMotion.angleInterpolation('HeadYaw', [0.3, -0.3, 0.3, -0.3, 0.0], [1.0, 2.0, 3.0, 4.0, 5.0], true);
-      ALMotion.angleInterpolation('HeadPitch', [-0.3, -0.5, -0.4], [1.0, 2.0, 3.0], true);
-      ALMotion.angleInterpolation('RShoulderPitch', 0.5, 5.0, true);
-      ALMotion.angleInterpolation('RElbowRoll', 0.23, 5.0, true);
-      ALMotion.angleInterpolation('RShoulderRoll', -1.15, 5.0, true);
-      ALMotion.angleInterpolation('RElbowYaw', 0.69, 5.0, true);
-      ALMotion.angleInterpolation('RWristYaw', 0.96, 5.0, true);
-      ALMotion.angleInterpolation('RHand', 0.7, 5.0, true);
-      ALMotion.angleInterpolation('LShoulderPitch', 0.4, 5.0, true);
-      ALMotion.angleInterpolation('LElbowRoll', -0.25, 5.0, true);
-      ALMotion.angleInterpolation('LShoulderRoll', 0.81, 5.0, true);
-      ALMotion.angleInterpolation('LElbowYaw', -1.41, 5.0, true);
-      ALMotion.angleInterpolation('LWristYaw', -0.89, 5.0, true);
-      ALMotion.angleInterpolation('LHand', 0.62, 5.0, true);
+      ALTextToSpeech.say('That\'s one watson tee shirt.');
+      ALMotion.setStiffnesses('Head', 1.0);
+      ALMotion.angleInterpolation('HeadPitch', [-0.3, -0.9, -0.4], [1.0, 2.0, 3.0], true);
+      ALMotion.angleInterpolation('RShoulderPitch', [0.0, 1.0, 0.0, 1.1, 1.3], [0.5, 1.5, 2.0, 2.5, 3.0], true);
+      ALMotion.angleInterpolation('RElbowRoll', [0.0, 1.5, 0.0, 1.5, 0.0], [0.5, 1.5, 2.0, 2.5, 3.0], true);
+      ALMotion.angleInterpolation('RShoulderRoll', [-1.0, -0.1], [1.0, 2.0], true);
+      ALMotion.angleInterpolation('RElbowYaw', [2.0, 0.5, 1.8], [1.0, 1.5, 2.0], true);
+      ALMotion.angleInterpolation('RHand', [1.0, 0.0], [1.0, 2.0], true);
+      ALMotion.angleInterpolation('LShoulderPitch', [1.8, 0.4], [1.0, 5.0], true);
+      ALMotion.angleInterpolation('LElbowRoll', [-1.1, -0.25], [1.0, 5.0], true);
+      ALMotion.angleInterpolation('LShoulderRoll', [0.5, 0.81], [1.0, 5.0], true);
+      ALMotion.angleInterpolation('LElbowYaw', [-0.6, -1.41], [1.0, 5.0], true);
+      ALMotion.angleInterpolation('LHand', [0.1, 0.62], [1.0, 5.0], true);
+
+      setTimeout(function() {
+        ALTextToSpeech.say('What next?');
+      }, 4000);
     }
+
+    function moveSummary(orderTotal) {
+      ALTextToSpeech.say('That\'ll be ' + orderTotal + 'dollars please.');
+      ALMotion.setStiffnesses('Head', 1.0);
+      ALMotion.angleInterpolation('HeadPitch', [-0.3, -0.9, -0.4], [1.0, 2.0, 3.0], true);
+      ALMotion.angleInterpolation('RShoulderPitch', 1.8, 1.0, true);
+      ALMotion.angleInterpolation('RElbowRoll', 1.1, 1.0, true);
+      ALMotion.angleInterpolation('RShoulderRoll', -0.5, 1.0, true);
+      ALMotion.angleInterpolation('RElbowYaw', 0.6, 1.0, true);
+      ALMotion.angleInterpolation('RHand', 0.1, 1.0, true);
+      ALMotion.angleInterpolation('LShoulderPitch', 1.8, 1.0, true);
+      ALMotion.angleInterpolation('LElbowRoll', -1.1, 1.0, true);
+      ALMotion.angleInterpolation('LShoulderRoll', 0.5, 1.0, true);
+      ALMotion.angleInterpolation('LElbowYaw', -0.6, 1.0, true);
+      ALMotion.angleInterpolation('LHand', 0.1, 1.0, true);
+    }
+
+    function moveSign() {
+      ALTextToSpeech.say('One more thing. Can I please have your signature?');
+      ALMotion.moveTo(0.1, 0.0, 0.0);
+      ALMotion.angleInterpolation('RShoulderPitch', 0.5, 1.0, true);
+      ALMotion.angleInterpolation('LShoulderPitch', 0.5, 1.0, true);
+    }
+
+    function moveFinish() {
+      ALTextToSpeech.say('Yay! Thank you.');
+      ALLeds.rotateEyes(0x00CC00, 1.0, 5.0);
+      ALMotion.setStiffnesses('Head', 1.0);
+
+      ALMotion.angleInterpolation('RShoulderPitch', -1.27, 1.0, true);
+      ALMotion.angleInterpolation('RElbowRoll', 0.3, 1.0, true);
+      ALMotion.angleInterpolation('RShoulderRoll', -0.31, 1.0, true);
+      ALMotion.angleInterpolation('RElbowYaw', 1.56, 1.0, true);
+      ALMotion.angleInterpolation('RHand', 0.85, 1.0, true);
+
+      ALMotion.angleInterpolation('LShoulderPitch', -1.27, 1.0, true);
+      ALMotion.angleInterpolation('LElbowRoll', -0.3, 1.0, true);
+      ALMotion.angleInterpolation('LShoulderRoll', 0.31, 1.0, true);
+      ALMotion.angleInterpolation('LElbowYaw', -1.56, 1.0, true);
+      ALMotion.angleInterpolation('LHand', 0.85, 1.0, true);
+
+      ALMotion.moveTo(0.0, 0.0, 3.1).then(function() {
+        ALMotion.moveTo(1.0, 0.0, 0.0);
+      });
+    }
+
+    moveInitial();
 
     //moveInitial();
     //moveStartCheckout();
     //moveFirstItem();
-
+    //moveSummary(19);
+    //moveSign();
+    //moveFinish();
 
     $scope.goStartCheckout = function() {
       $scope.step = 'startCheckout';
+      moveStartCheckout();
       $timeout(function() {
         takePicture();
       }, 3000);
@@ -227,7 +280,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
             }
 
             $scope.step = 'firstItem';
-
+            moveFirstItem();
           });
         }).finally(function() {
           $scope.loadingPic = false;
@@ -240,6 +293,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
 
     $scope.goSummary = function() {
       $scope.step = 'summary';
+      moveSummary(19);
       braintree.setup($scope.token, 'custom', {
         paypal: {container: 'paypal-button'},
         onPaymentMethodReceived: function(res) {
@@ -256,6 +310,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
 
     $scope.goSign = function() {
       $scope.step = 'sign';
+      moveSign();
       $(function() {
         $('#simple_sketch').sketch();
       });
@@ -264,6 +319,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
     $scope.goFinished = function() {
       $scope.createOrder();
       $scope.step = 'finished';
+      moveFinish();
     };
 
     $scope.startOver = function() {
@@ -320,5 +376,3 @@ app.factory('TokenInterceptor', function($q, API_SERVER) {
 app.config(function($httpProvider) {
   $httpProvider.interceptors.push('TokenInterceptor');
 });
-
-
