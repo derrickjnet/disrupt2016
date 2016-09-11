@@ -67,6 +67,12 @@
   }
 
 
+  .score {
+    font-family: 'EB Garamond' !important;
+    font-size: 25px;
+    color: #ffc4c4;
+  }
+
     a:hover {
       text-decoration: none;
       cursor: pointer;

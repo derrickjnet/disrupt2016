@@ -256,7 +256,7 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
       moveStartCheckout();
       $timeout(function() {
         takePicture();
-      }, 3000);
+      }, 4000);
     };
 
     function takePicture() {
@@ -268,8 +268,9 @@ app.controller('MainController', function($scope, $http, $timeout, $window, Brai
           $scope.imageSrc = API_SERVER + '/image.jpg';
 
           $http.get('/api/check').success(function(results) {
-            if(results.classes && results.classes.length > 0) {
-              $scope.score = results.classes[0].score;
+            console.log(results);
+            if(results && results.length > 0 && results[0].classes && results[0].classes.length > 0) {
+              $scope.score = results[0].classes[0].score;
             }
 
             for(var i = 0; i < $scope.products.length; i++) {
