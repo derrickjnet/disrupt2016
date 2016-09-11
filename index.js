@@ -42,7 +42,7 @@ app.post("/api/orders", function(req, res, next) {
   });
 
   transactionPromise.then(() => {
-    orders.push({id: Math.random(), total: product.amount, products: [product], created: Date.now()});
+    orders.push({id: Math.random().toString(36).substring(7), total: product.amount, products: [product], created: Date.now()});
 
     res.send();
   });

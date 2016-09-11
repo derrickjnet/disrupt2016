@@ -41,8 +41,8 @@ app.controller('MainController', ($scope, Braintree, Product, Order) => {
 
   $scope.createOrder = () => {
 
-    Order.createOrder($scope.productId, $scope.nonce).success(function() {
-      $scope.productId = null;
+    Order.createOrder($scope.product.id, $scope.nonce).success(function() {
+      $scope.product = null;
 
       refreshOrders();
     });
@@ -79,5 +79,6 @@ app.controller('MainController', ($scope, Braintree, Product, Order) => {
 
   refreshProducts();
   refreshBraintree();
+  refreshOrders();
 
 });

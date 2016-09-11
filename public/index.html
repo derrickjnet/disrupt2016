@@ -20,6 +20,12 @@
   <button ng-disabled="!nonce || !product">Pay {{product ? product.amount : ''}}</button>
 </form>
 
+Recent orders
+
+<div ng-repeat="order in orders">
+  {{order.created}} {{order.id}} {{order.products}} {{order.amount}}
+</div>
+
 </body>
 
 </html>
