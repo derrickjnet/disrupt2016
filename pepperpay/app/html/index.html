@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html ng-app="website">
+<head>
+    <!-- needed to scale tablet display -->
+    <meta name="viewport"
+          content="initial-scale = 1.333,
+          minimum-scale = 1.333,
+          maximum-scale = 1.333" />
+
+    <!-- application css -->
+   <!--  <link media="screen" href="css/style.css" rel="stylesheet" type="text/css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link media="screen" href="css/main.css" rel="stylesheet" type="text/css">
+
+</head>
+<body class="unselectable" ng-controller="MainController">
+<!-- 
+  <div class="">
+      <input type="text" class="inputText" placeholder"Say something" style="height:100px;font-size: 50px;width:600px;">
+      <button class="sayItButton bigfriendlybutton">Say It</button>
+      <br>
+      <input type="text" class="outputText" placeholder"output" style="height:100px;font-size: 50px;width:600px;">
+
+      <br><br>
+      <img src="/home/nao/recordings/cameras/image.jpg">
+
+      <br><br>
+
+      <canvas width="500" height="500" id="simple_sketch" style="background-color:white;"></canvas>
+  </div> -->
+
+
+  <div ng-show="step == 'initial'">
+      <br><br><br><br><br>    <center><h1 class="hi">Hi, I'm Pepper.</h1>
+      <p>How can I help you today?</p></center>
+      <br>
+      <br>
+      <div class="container">
+
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <a href="#" role="button" ng-click="goStartCheckout()">
+                        <div class="first-button">
+                        <h1 class="button-text"><strong>Check<br>Out</strong></h1>
+                    </div>
+                </a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a href="#" role="button">
+                        <div class="first-button">
+                        <h1 class="button-text"><strong>Price<br>Check</strong></h1>
+                    </div>
+                </a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a href="#" role="button">
+                        <div class="first-button">
+                        <h1 class="button-text"><strong>Quick<br>Question</strong></h1>
+                    </div>
+                </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+  </div>
+
+  <div ng-show="step == 'startCheckout'">
+    <br>
+    <br><br><br><br><br>
+    <br>
+    <br>
+    <div class="container text-center">
+    <h1 class="first-item-please">Your first item, please.</h1>
+      <p>I'll be taking a picture of your first item. Say cheese!</p>
+    <br><br>
+    <img src="img/camera.png" height="150px">
+    <br><br><br>
+    <img src="img/loader.gif" width="100" ng-show="loadingPic">
+    </div>
+  </div>
+
+  <div ng-show="step == 'firstItem'">
+    <br><br><br>
+
+    <div class="container">
+      <center><img ng-src="{{imageSrc}}" class="img-rounded" height="200"></center>
+    <div class="row"><br>
+      <div class="col-md-10 col-md-offset-1">
+        <h1>1 Watson t-shirt ---------- $16.50</h1>
+        <p class="pull-left">Details: 100% cotton. Hand wash and dry.</p> 
+      </div>
+    <!--  <div class="col-md-4">
+        <h1>$15.99</h1>
+      </div> -->
+    </div>
+    <br><br>
+    <div class="row text-center">
+
+    <div class="col-md-4 col-md-offset-2">
+              <a href="#" role="button">
+              <div class="first-item-button">
+              <h1 class="button-text-first"><strong>Add another item</strong></h1><br>
+            </div>
+          </a>
+    </div>
+    <div class="col-md-4">
+              <a href="#" role="button" ng-click="goSummary()">
+              <div class="first-item-button">
+              <h1 class="button-text-first"><strong>Pay now</strong></h1><br>
+            </div>
+          </a>
+    </div>
+      </div>
+    <!--  <p>I'll be taking a picture of your first item. Say cheese!</p> -->
+    <br><br>
+
+    </div>
+  </div>
+
+  <div ng-show="step == 'summary'">
+    <br><br><br>
+
+    <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <h1>Order summary</h1>
+        <p>Please review your items &amp; show your payment to continue.</p> 
+    <br><br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Watson t-shirt</td>
+            <td>1</td>
+            <td>$16.50</td>
+          </tr>
+       
+                <tr>
+                   <td></td>
+            <td></td>
+            <td>-</td>
+          </tr>
+        
+                <tr>
+                   <td></td>
+            <td>Subtotal</td>
+            <td>$16.50</td>
+          </tr>
+                 <tr>
+                   <td></td>
+            <td>Tax</td>
+            <td>$2.50</td>
+          </tr>
+                  <tr>
+                   <td></td>
+            <td class="bolds">Grand Total</td>
+            <td class="bolds">$19.00</td>
+          </tr>
+
+        </tbody>
+      </table>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <center>
+          <div class="paypal-wrapper">
+            <div id="paypal-button"></div>
+          </div>
+          <br>
+          <a href="#" role="button" ng-click="goSign()" class="next-button">Next</a>
+        </center>
+      </div>
+    </div>
+
+    <br><br>
+    <br><br>
+
+    </div>
+    
+  </div>
+
+  <div ng-show="step == 'sign'">
+    <br>
+
+    <br>
+    <br>
+    <div class="container text-center">
+      <img src="img/braintree.png" height="50px">
+    <h1>Payment accepted</h1>
+      <p>Please sign below to complete your purchase.</p>
+    <br><br>
+    <canvas width="500" height="200" id="simple_sketch" style="background-color:white;"></canvas><br><br>
+
+
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+    <center>
+        <a href="#" role="button" ng-click="goFinished()">
+              <div class="finish-button">
+              <h1 class="button-text-finish"><strong>Finish</strong></h1><br>
+            </div>
+          </a>
+        </center>
+        </div>
+      </div>
+    </div><br><br>
+  </div>
+
+  <div ng-show="step == 'finished'">
+    <br>
+    <br><br><br><br>
+      <br>
+      <br>
+    <div class="container text-center">
+      <img src="img/check2.png" height="150px"><br><br>
+    <h1>Thank you!</h1>
+      <p>See you next time.</p>
+      <br><br><br><br>
+      <a href="#" ng-click="startOver()" class="next-button">Start Over</a>
+    </div>
+    
+  </div>
+
+  <script src="js/jquery-3.1.0.min.js"></script>
+  <script src="https://js.braintreegateway.com/js/braintree-2.28.0.min.js"></script>
+  <script src="js/robotutils.js"></script>
+  <script src="js/sketch.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script> -->
+  <script src="js/angular.min.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+* {
+    font-family: 'Quicksand' !important;
+  }
+
+  body {
+    background-color: #da5757;
+  }
+
+  .first-button {
+    background-color: white;
+    padding: 30px;
+    margin:20px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    -webkit-box-shadow: 10px 10px 0px 0px #eeb4b4;
+    -moz-box-shadow: 10px 10px 0px 0px #eeb4b4;
+    box-shadow: 10px 10px 0px 0px #eeb4b4;
+  }
+
+  .first-item-button {
+    background-color: white;
+    padding: 15px;
+    margin:20px;
+    -webkit-box-shadow: 10px 10px 0px 0px #eeb4b4;
+    -moz-box-shadow: 10px 10px 0px 0px #eeb4b4;
+    box-shadow: 10px 10px 0px 0px #eeb4b4;
+  }
+
+  .next-button {
+    background-color: white;
+    padding: 10px;
+    margin: 0px;
+    -webkit-box-shadow: 5px 5px 0px 0px #eeb4b4;
+    -moz-box-shadow: 5px 5px 0px 0px #eeb4b4;
+    box-shadow: 5px 5px 0px 0px #eeb4b4;
+    color: #da5757 !important;
+    font-size: 20px;
+  }
+
+  .finish-button {
+    background-color: white;
+    padding: 5px;
+    margin:5px;
+    -webkit-box-shadow: 10px 10px 0px 0px #eeb4b4;
+    -moz-box-shadow: 10px 10px 0px 0px #eeb4b4;
+    box-shadow: 10px 10px 0px 0px #eeb4b4;
+  }
+
+  .button-text {
+    color: #da5757 !important;
+    font-size: 36px;
+  }
+
+  .button-text-first {
+    color: #da5757 !important;
+    font-size: 30px;
+  }
+
+  .button-text-finish {
+    color: #da5757 !important;
+    font-size: 20px;
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+    a:hover {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:active {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:visited {
+      text-decoration: none;
+      cursor: pointer;
+    }
+  p {
+      font-family: 'EB Garamond' !important;
+      font-size: 25px;
+      color: #ffc4c4;
+    }
+   .hi {
+      color: white;
+      font-weight: 700;
+      font-size: 60px;
+    }
+
+    h1 {
+      color: white;
+      font-weight: 700;
+      font-size: 60px;
+    }
+
+    th {
+      color: white !important;
+      font-size: 30px;
+    }
+
+    td {
+            color: #ffc4c4;
+            font-size: 25px;
+    }
+
+    .bolds {
+      color: white;
+      font-weight: 700;
+      font-size: 25px;
+    }
+
+    .paypal-wrapper {
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
