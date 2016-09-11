@@ -30,7 +30,7 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,authorization,platform');
   res.setHeader('Access-Control-Allow-Credentials', true);
-  return next(); 
+  return next();
 });
 
 var products = [{id: 1, name: 'Tee-shirt', amount: '15.00'}, {id: 2, name: 'Pants', amount: '30.00'}, {id: 3, name: 'Socks', amount: '7.00'}];
@@ -65,13 +65,37 @@ app.post("/api/orders", function(req, res, next) {
   });
 });
 
-app.get('/api/test', function(req, res, next) {
-
-  var params = {
-    images_file: fs.createReadStream(__dirname + '/resources/watson-shirt.jpg')
-  };
+app.get('/api/train', function(req, res, next) {
 
   var visualPromise = new Promise((resolve, reject) => {
+
+    var params = {
+      name: 'watson-shirt',
+      watson_shirt_positive_examples: fs.createReadStream(__dirname + '/trainings/watson-shirt/watson-shirt.zip'),
+      holding_watson_shirt_positive_examples: fs.createReadStream(__dirname + '/trainings/watson-shirt/holding-watson-shirt.zip'),
+      negative_examples: fs.createReadStream(__dirname + '/trainings/watson-shirt/twilio-shirt.zip')
+    };
+
+    VisualRecognitionClient.createClassifier(params, function(err, response) {
+      if(err) console.log(err);
+
+      resolve(response);
+    });
+  });
+
+  visualPromise.then((result) => {
+    res.send(result);
+  })
+});
+
+app.get('/api/test', function(req, res, next) {
+
+  var visualPromise = new Promise((resolve, reject) => {
+
+    var params = {
+      images_file: fs.createReadStream(__dirname + '/resources/watson-shirt.jpg')
+    };
+
     VisualRecognitionClient.classify(params, function(err, response) {
       if(err) console.log(err);
 
